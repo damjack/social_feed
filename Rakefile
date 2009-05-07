@@ -1,22 +1,24 @@
 require 'rake'
-require 'rake/testtask'
-require 'rake/rdoctask'
+require 'spec/rake/spectask'
 
-desc 'Default: run unit tests.'
-task :default => :test
+desc 'Default: run specs.'
+task :default => :spec
 
-desc 'Test the social_feed plugin.'
-Rake::TestTask.new(:test) do |t|
-  t.libs << 'lib'
-  t.pattern = 'test/**/*_test.rb'
-  t.verbose = true
+desc "Run all specs"
+Spec::Rake::SpecTask.new(:spec) do |t|
+  t.spec_files = FileList['spec/**/*_spec.rb']
 end
 
-desc 'Generate documentation for the social_feed plugin.'
-Rake::RDocTask.new(:rdoc) do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'SocialFeed'
-  rdoc.options << '--line-numbers' << '--inline-source'
-  rdoc.rdoc_files.include('README')
-  rdoc.rdoc_files.include('lib/**/*.rb')
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gemspec|
+    gemspec.name = "social_feed"
+    gemspec.summary = "a ruby on rails plugin to create and display a social feed"
+    gemspec.email = "alex@upstream-berlin.com"
+    gemspec.homepage = "http://github.com/langalex/social_feed"
+    gemspec.description = ""
+    gemspec.authors = ["Alexander Lang", "Thilo Utke"]
+  end
+rescue LoadError
+  puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
 end
